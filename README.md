@@ -1,4 +1,4 @@
-# MIE237 Stats Project
+# MIE237 Project: How well can humans discern AI-generated and Real content
 
 This project is a Tkinter-based application for the purpose of testing the hypothesis of human ability to discern AI and real content. The user views the videos and audio clips through a series of rounds. The voting data, along with the user ID and video ground truth, is recorded in a CSV file or a database. 
 
