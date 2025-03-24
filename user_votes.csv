@@ -1,0 +1,98 @@
+User ID,Video ID,Vote,Ground Truth
+dasf,video_1,Option 1,Ground Truth Example
+dasf,video_2,Option 1,Ground Truth Example
+dasf,video_3,Option 1,Ground Truth Example
+dasf,video_4,Option 1,Ground Truth Example
+dasf,video_5,Option 1,Ground Truth Example
+dasf,video_6,Red,Ground Truth Example
+dasf,video_7,Red,Ground Truth Example
+dasf,video_8,Red,Ground Truth Example
+dasf,video_9,Red,Ground Truth Example
+dasf,video_10,Red,Ground Truth Example
+a,video_1,Option 1,Ground Truth Example
+a,video_2,Option 2,Ground Truth Example
+a,video_3,Option 1,Ground Truth Example
+a,video_4,Option 2,Ground Truth Example
+a,video_5,Option 1,Ground Truth Example
+a,video_6,Red,Ground Truth Example
+a,video_7,Red,Ground Truth Example
+a,video_8,Blue,Ground Truth Example
+a,video_9,Red,Ground Truth Example
+a,video_10,Blue,Ground Truth Example
+kwfoep,video_1,Option 2,Ground Truth Example
+kwfoep,video_2,Option 2,Ground Truth Example
+kwfoep,video_3,Option 2,Ground Truth Example
+kwfoep,video_4,Option 2,Ground Truth Example
+kwfoep,video_5,Option 2,Ground Truth Example
+kwfoep,video_6,Blue,Ground Truth Example
+kwfoep,video_7,Blue,Ground Truth Example
+kwfoep,video_8,Blue,Ground Truth Example
+kwfoep,video_9,Blue,Ground Truth Example
+kwfoep,video_10,Blue,Ground Truth Example
+prqiop,video_1,Option 2,Ground Truth Example
+prqiop,video_2,Option 2,Ground Truth Example
+prqiop,video_3,Option 2,Ground Truth Example
+prqiop,video_4,Option 2,Ground Truth Example
+prqiop,video_5,Option 2,Ground Truth Example
+prqiop,video_6,Blue,Ground Truth Example
+prqiop,video_7,Blue,Ground Truth Example
+prqiop,video_8,Blue,Ground Truth Example
+prqiop,video_9,Blue,Ground Truth Example
+prqiop,video_10,Blue,Ground Truth Example
+kasjdhvm,video_1,Option 2,Ground Truth Example
+kasjdhvm,video_2,Option 2,Ground Truth Example
+kasjdhvm,video_3,Option 2,Ground Truth Example
+kasjdhvm,video_4,Option 2,Ground Truth Example
+kasjdhvm,video_5,Option 2,Ground Truth Example
+kasjdhvm,video_6,Blue,Ground Truth Example
+kasjdhvm,video_7,Blue,Ground Truth Example
+kasjdhvm,video_8,Blue,Ground Truth Example
+kasjdhvm,video_9,Blue,Ground Truth Example
+kasjdhvm,video_10,Blue,Ground Truth Example
+pou,video_1,AI,Ground Truth Example
+pou,video_2,AI,Ground Truth Example
+pou,video_3,AI,Ground Truth Example
+pou,video_4,AI,Ground Truth Example
+pou,video_5,AI,Ground Truth Example
+pou,video_6,AI,Ground Truth Example
+pou,video_7,AI,Ground Truth Example
+pou,video_8,AI,Ground Truth Example
+pou,video_9,AI,Ground Truth Example
+pou,video_10,AI,Ground Truth Example
+uguartere,video_1,AI,Ground Truth Example
+uguartere,video_2,AI,Ground Truth Example
+uguartere,video_3,AI,Ground Truth Example
+uguartere,video_4,AI,Ground Truth Example
+uguartere,video_5,AI,Ground Truth Example
+uguartere,video_6,AI,Ground Truth Example
+uguartere,video_7,AI,Ground Truth Example
+uguartere,video_8,AI,Ground Truth Example
+uguartere,video_9,AI,Ground Truth Example
+uguartere,video_10,AI,Ground Truth Example
+lj,video_1,Option 1,Ground Truth
+lj,video_2,Red,Ground Truth
+hello,video_1,Option 1,Ground Truth
+hello,video_2,Red,Ground Truth
+asdf,tkinter-voting-app/src/data/video_1,Option 2,Ground Truth
+asdf,tkinter-voting-app/src/data/video_2,Blue,Ground Truth
+asfd,tkinter-voting-app/src/data/video_1,Option 2,Ground Truth
+asfd,tkinter-voting-app/src/data/video_2,Red,Ground Truth
+asdf,tkinter-voting-app/src/data/video_1,Option 1,Ai
+as,tkinter-voting-app/src/data/video_1,Blue,Real
+as,tkinter-voting-app/src/data/video_2,Option 1,Ai
+jjjj,tkinter-voting-app/src/data/video_1,Option 2,Ai
+jjjj,tkinter-voting-app/src/data/video_2,Red,Real
+jjjo,tkinter-voting-app/src/data/video_1,Option 2,Ai
+jjjo,tkinter-voting-app/src/data/video_2,Red,Real
+popo,tkinter-voting-app/src/data/video_1,Option 1,Ai
+popo,tkinter-voting-app/src/data/video_2,Blue,Real
+jk,tkinter-voting-app/src/data/video_1,Red,Real
+jk,tkinter-voting-app/src/data/video_2,Option 2,Ai
+popji,tkinter-voting-app/src/data/video_1,Option 1,Ai
+popji,tkinter-voting-app/src/data/video_2,Blue,Real
+asscsc,tkinter-voting-app/src/data/video_1,Option 2,Ai
+asscsc,tkinter-voting-app/src/data/video_2,Blue,Real
+cweac,tkinter-voting-app/src/data/video_1,Option 1,Ai
+cweac,tkinter-voting-app/src/data/video_2,Blue,Real
+czxzx ,tkinter-voting-app/src/data/video_1,Option 2,Ai
+czxzx ,tkinter-voting-app/src/data/video_2,Blue,Real
