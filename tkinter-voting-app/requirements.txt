@@ -1,0 +1,4 @@
+Tkinter
+opencv-python
+pandas
+sqlite3

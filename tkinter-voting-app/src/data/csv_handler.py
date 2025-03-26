@@ -8,7 +8,7 @@ def write_voting_data(file_path, user_id, video_id, vote, ground_truth):
         writer = csv.writer(file)
         
         if not file_exists:
-            writer.writerow(['User ID', 'Video ID', 'Vote', 'Ground Truth'])
+            writer.writerow(['User ID', 'Data ID', 'Vote', 'Ground Truth'])
         
         writer.writerow([user_id, video_id, vote, ground_truth])
 

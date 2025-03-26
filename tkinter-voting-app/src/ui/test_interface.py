@@ -15,12 +15,41 @@ class TestInterface(Frame):
         self.user_id = user_id
         self.switch_to_main_menu = switch_to_main_menu
 
-        # Define voting rounds with ground truths
-        self.voting_data = [
-            {"options": ("Option 1", "Option 2"), "ground_truth": "Ai"},
-            {"options": ("Red", "Blue"), "ground_truth": "Real"},
-            # Add more entries as needed
+        # Define a list of videos with their metadata
+        self.video_pool = [
+            {"person": "LeBron", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/lebron_real.mp4"},
+            {"person": "LeBron", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/lebron_fake.mp4"},
+            {"person": "Will Smith", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/WillsmithReal.mp4"},
+            {"person": "Will Smith", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/WillSmithFake.mp4"},
+            {"person": "Snoop Dogg", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/SnoopDogReal.mp4"},
+            {"person": "Snoop Dogg", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/SnoopDogFake.mp4"},
+            {"person": "MrBeast", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/MrBeastreal.mp4"},
+            {"person": "MrBeast", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/MrBeastFake.mp4"},
+            {"person": "Justin Bieber", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/JustinBieberReal.mp4"},
+            {"person": "Justin Bieber", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/JustinBieberFake.mp4"},
+            {"person": "Bill Gates", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/BillGatesReal.mp4"},
+            {"person": "Bill Gates", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/BillGatesFake.mp4"}
         ]
+
+        # Filter the video pool to include only one video per person
+        self.video_pool = self.filter_video_pool(self.video_pool)
+
+        # Shuffle the video pool for random order
+        random.shuffle(self.video_pool)
+
+        self.video_pool = self.video_pool[:5]
 
         self.current_round = 0
         self.video_label = None  # Label to display video frames
@@ -34,18 +63,35 @@ class TestInterface(Frame):
         # Display the first voting round
         self.display_voting_round()
 
+    def filter_video_pool(self, video_pool):
+        """Filter the video pool to include only one video (real or fake) per person."""
+        filtered_pool = []
+        seen_people = set()
+
+        for video in video_pool:
+            person = video["person"]
+            if person not in seen_people:
+                # Randomly select either "real" or "fake" for this person
+                person_videos = [
+                    v for v in video_pool if v["person"] == person]
+                selected_video = random.choice(person_videos)
+                filtered_pool.append(selected_video)
+                seen_people.add(person)
+
+        return filtered_pool
+
     def display_voting_round(self):
         # Clear the current frame
         for widget in self.winfo_children():
             widget.destroy()
 
         # Check if all rounds are completed
-        if self.current_round >= len(self.voting_data):
+        if self.current_round >= len(self.video_pool):
             self.switch_to_thank_you()
             return
 
-        # Get the current voting data
-        current_data = self.voting_data[self.current_round]
+        # Randomly select a video for the current round
+        current_data = self.video_pool[self.current_round]
         option1, option2 = current_data["options"]
 
         # Display the voting options
@@ -53,7 +99,7 @@ class TestInterface(Frame):
               font=("Arial", 16)).pack(pady=20)
 
         # Play the video for the current round
-        video_path = f"tkinter-voting-app/src/data/video_{self.current_round + 1}.mp4"
+        video_path = current_data["video_path"]
         self.play_video(video_path)
 
         Button(self, text=option1, command=lambda: self.record_vote(
@@ -139,11 +185,11 @@ class TestInterface(Frame):
 
     def record_vote(self, vote):
         # Save the vote to the CSV file
-        current_data = self.voting_data[self.current_round]
+        current_data = self.video_pool[self.current_round]
         ground_truth = current_data["ground_truth"]
 
         write_voting_data("user_votes.csv", self.user_id,
-                          f"tkinter-voting-app/src/data/video_{self.current_round + 1}", vote, ground_truth)
+                          current_data["video_path"], vote, ground_truth)
 
         # Move to the next round
         self.current_round += 1
@@ -151,6 +197,7 @@ class TestInterface(Frame):
 
     def switch_to_thank_you(self):
         # Clear the current frame and display the thank-you message
+        self.stop_video()
         for widget in self.parent.winfo_children():
             widget.destroy()
         Label(self.parent, text="Thank you for participating!",
@@ -188,11 +235,8 @@ def start_test(root, user_id):
     app = TestInterface(root, user_id, switch_to_main_menu)
 
     # TODO: RANDOM ORDER?
-
     # Seed the random number generator with the current system time
-    random.seed()  # Ensures a different seed is used each time
-    random.shuffle(app.voting_data)  # Randomize the video order
-    print("Voting data has been randomized:",
-          app.voting_data)  # Log the randomized data
+    random.seed(42)  # Ensures a different seed is used each time
+    random.shuffle(app.video_pool)  # Randomize the video order
 
     app.pack()
