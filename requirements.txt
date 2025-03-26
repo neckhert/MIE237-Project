@@ -1,0 +1,4 @@
+ffpyplayer==4.5.2
+numpy==2.0.1
+opencv-python==4.10.0.84
+pygame==2.5.2

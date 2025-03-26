@@ -51,35 +51,35 @@ class ExperimentGUI:
         else:
             self.show_results()
 
-    def show_video(self):
-        self.clear_window()
+    # def show_video(self):
+    #     self.clear_window()
         
-        # Video player
-        video_player = TkinterVideo(master=self.root, scaled=True)
-        video_player.load(self.videos[self.current_video]["path"])
-        video_player.pack(expand=True, fill="both", padx=10, pady=10)
-        video_player.play()
+    #     # Video player
+    #     video_player = TkinterVideo(master=self.root, scaled=True)
+    #     video_player.load(self.videos[self.current_video]["path"])
+    #     video_player.pack(expand=True, fill="both", padx=10, pady=10)
+    #     video_player.play()
         
-        # Wait for video to finish then show rating
-        video_player.bind("<<Ended>>", lambda e: self.show_rating(video_player))
+    #     # Wait for video to finish then show rating
+    #     video_player.bind("<<Ended>>", lambda e: self.show_rating(video_player))
 
-    def show_rating(self, video_player):
-        video_player.pack_forget()
+    # def show_rating(self, video_player):
+    #     video_player.pack_forget()
         
-        # Rating frame
-        rating_frame = ttk.Frame(self.root)
-        rating_frame.pack(expand=True)
+    #     # Rating frame
+    #     rating_frame = ttk.Frame(self.root)
+    #     rating_frame.pack(expand=True)
         
-        tk.Label(rating_frame, text="Was this video positive or negative?", font=("Arial", 14)).pack(pady=20)
+    #     tk.Label(rating_frame, text="Was this video positive or negative?", font=("Arial", 14)).pack(pady=20)
         
-        response = tk.StringVar()
+    #     response = tk.StringVar()
         
-        tk.Radiobutton(rating_frame, text="Positive", variable=response, value="positive").pack()
-        tk.Radiobutton(rating_frame, text="Negative", variable=response, value="negative").pack()
+    #     tk.Radiobutton(rating_frame, text="Positive", variable=response, value="positive").pack()
+    #     tk.Radiobutton(rating_frame, text="Negative", variable=response, value="negative").pack()
         
-        submit_btn = tk.Button(rating_frame, text="Submit",
-                             command=lambda: self.save_response(response.get()))
-        submit_btn.pack(pady=20)
+    #     submit_btn = tk.Button(rating_frame, text="Submit",
+    #                          command=lambda: self.save_response(response.get()))
+    #     submit_btn.pack(pady=20)
 
     def save_response(self, user_response):
         if not user_response:

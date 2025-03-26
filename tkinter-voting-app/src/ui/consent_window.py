@@ -7,7 +7,7 @@ class ConsentWindow(Frame):
         self.switch_to_test = switch_to_test
 
         # Add a label for the consent message
-        Label(self, text="Please consent to participate in the study.",
+        Label(self, text="Something seomthing, do you consent... your data private and\n protected... data will be used for a study.",
               font=("Arial", 16)).pack(pady=20)
 
         # Add a field to enter user ID
