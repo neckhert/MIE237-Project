@@ -63,3 +63,20 @@ sasfd,tkinter-voting-app/src/data/videos/MrBeastFake.mp4,Real,Fake
 sasfd,tkinter-voting-app/src/data/videos/lebron_fake.mp4,Real,Fake
 sasfd,tkinter-voting-app/src/data/videos/BillGatesFake.mp4,Real,Fake
 sasfd,tkinter-voting-app/src/data/videos/JustinBieberReal.mp4,Real,Real
+sdfg,tkinter-voting-app/src/data/videos/lebron_fake.mp4,AI,Fake
+sdfg,tkinter-voting-app/src/data/videos/MrBeastreal.mp4,Real,Real
+Ethan Jan,tkinter-voting-app/src/data/videos/MrBeastFake.mp4,AI,Fake
+Ethan Jan,tkinter-voting-app/src/data/videos/SnoopDogFake.mp4,AI,Fake
+Ethan Jan,tkinter-voting-app/src/data/videos/JustinBieberFake.mp4,AI,Fake
+Ethan Jan,tkinter-voting-app/src/data/videos/lebron_fake.mp4,AI,Fake
+Ethan Jan,tkinter-voting-app/src/data/videos/WillSmithFake.mp4,AI,Fake
+wang janner,tkinter-voting-app/src/data/videos/JustinBieberFake.mp4,AI,Fake
+wang janner,tkinter-voting-app/src/data/videos/lebron_real.mp4,Real,Real
+wang janner,tkinter-voting-app/src/data/videos/MrBeastreal.mp4,Real,Real
+wang janner,tkinter-voting-app/src/data/videos/BillGatesFake.mp4,AI,Fake
+wang janner,tkinter-voting-app/src/data/videos/SnoopDogReal.mp4,Real,Real
+wang janner,tkinter-voting-app/src/data/audios/OprahWinfreyFake.mp3,Real,Fake
+wang janner,tkinter-voting-app/src/data/audios/SnoopDogFake.mp3,AI,Fake
+wang janner,tkinter-voting-app/src/data/audios/CaitlinClarkFake.mp3,AI,Fake
+wang janner,tkinter-voting-app/src/data/audios/WillSmithFake.mp3,Real,Fake
+wang janner,tkinter-voting-app/src/data/audios/KimKardashianFake.mp3,Real,Fake
