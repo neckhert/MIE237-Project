@@ -142,7 +142,7 @@ class TestInterface(ctk.CTkFrame):
             j=0
             while len(balanced_videos)<5:
                 real=real_videos[i]
-                fake=fake_videos[j]
+                fake=fake=fake_videos[j]
                 while real['person'] in used_people and i < 9:
                     i+=1
                     real=real_videos[i]

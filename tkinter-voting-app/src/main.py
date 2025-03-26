@@ -7,7 +7,7 @@ import customtkinter as ctk
 def main():
     # Set the appearance mode to "Dark" or "Light"
     ctk.set_appearance_mode("Dark")
-    ctk.set_default_color_theme("dark-blue")  # Set the color theme
+    ctk.set_default_color_theme("green")  # Set the color theme
 
     root = ctk.CTk()
     root.title("237 Stats Project")
@@ -23,8 +23,7 @@ def main():
         for widget in root.winfo_children():
             widget.destroy()
         consent_window = ctk.CTkFrame(root)
-        ctk.CTkLabel(consent_window, text="Do you consent to participate?", font=(
-            "Arial", 16)).pack(pady=20)
+        ctk.CTkLabel(consent_window, text="Hello!\nWe are running an experiment to test how proficient humans are at detecting AI-generated media.\n We will show you five videos and five audios and you will simply select whether they are real or fake!\nPlease wait for all media to play all the way through before voting, and try to avoid double clicking.\nDo you consent to participate?", font=("Arial", 16)).pack(pady=20)
         user_id_entry = ctk.CTkEntry(
             consent_window, placeholder_text="Enter your User ID")
         user_id_entry.pack(pady=10)
