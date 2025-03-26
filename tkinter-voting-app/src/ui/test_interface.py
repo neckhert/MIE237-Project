@@ -2,10 +2,9 @@ import customtkinter as ctk
 from ffpyplayer.player import MediaPlayer
 import os
 import random
-import threading
-import time
-from data.csv_handler import write_voting_data
+from tkinter import messagebox
 import cv2
+from data.csv_handler import write_voting_data
 import numpy as np
 
 
@@ -45,7 +44,23 @@ class TestInterface(ctk.CTkFrame):
             {"person": "Bill Gates", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/BillGatesReal.mp4"},
             {"person": "Bill Gates", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
-             "video_path": "tkinter-voting-app/src/data/videos/BillGatesFake.mp4"}
+             "video_path": "tkinter-voting-app/src/data/videos/BillGatesFake.mp4"},
+            {"person": "Caitlin Clark", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/CaitlinClarkReal.mp4"},
+            {"person": "Caitlin Clark", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/CaitlinClarkFake.mp4"},
+            {"person": "Kim K", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/KimKardashianReal.mp4"},
+            {"person": "Kim K", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/KimKardashianFake.mp4"},
+            {"person": "Jordan", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/MichaelJordanReal.mp4"},
+            {"person": "Jordan", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/MichaelJordanFake.mp4"},
+            {"person": "Oprah", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/videos/OprahWinfreyReal.mp4"},
+            {"person": "Oprah", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/videos/OprahWinfreyFake.mp4"}
         ]
 
         self.audio_pool = [
@@ -147,71 +162,68 @@ class TestInterface(ctk.CTkFrame):
         media_path = current_data["video_path"]
         # use the video play fucntion since the audio one doesnt work
         self.play_video(media_path)
- 
 
         # Display the voting options
         ctk.CTkButton(self, text=option1,
-                      command=lambda: self.record_vote(option1)).pack(pady=10)
+                      command=lambda: self.record_vote(option1),
+                      width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=10)
+
         ctk.CTkButton(self, text=option2,
-                      command=lambda: self.record_vote(option2)).pack(pady=10)
+                      command=lambda: self.record_vote(option2),
+                      width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=10)
 
     def play_video(self, video_path):
         """Play the video."""
         self.stop_video()
 
         if not os.path.exists(video_path):
-            ctk.CTkMessagebox.show_error(
+            messagebox.showerror(
                 "Error", f"Video file not found: {video_path}")
             return
 
         try:
             self.media_player = MediaPlayer(video_path)
         except Exception as e:
-            ctk.CTkMessagebox.show_error(
+            messagebox.showerror(
                 "Error", f"Failed to initialize MediaPlayer: {e}")
             return
 
         self.update_video_frame()
 
-    def play_audio(self, audio_path, person_name):
-        """Play the audio."""
-        self.stop_audio()
+    # def play_audio(self, audio_path, person_name):
+    #     """Play the audio."""
+    #     self.stop_audio()
 
-        # Display the person's name
-        ctk.CTkLabel(self, text=f"Person: {person_name}", font=(
-            "Arial", 16)).pack(pady=10)
+    #     # Display the person's name
+    #     ctk.CTkLabel(self, text=f"Person: {person_name}", font=(
+    #         "Arial", 16)).pack(pady=10)
 
-        if not os.path.exists(audio_path):
-            ctk.CTkMessagebox.show_error(
-                "Error", f"Audio file not found: {audio_path}")
-            return
+    #     if not os.path.exists(audio_path):
+    #         ctk.CTkMessagebox.show_error(
+    #             "Error", f"Audio file not found: {audio_path}")
+    #         return
 
-        def audio_thread():
-            try:
-                self.audio_player = MediaPlayer(audio_path)
-                while True:
-                    audio_pos = self.audio_player.get_pts()
-                    if audio_pos < 0:
-                        break
-                    time.sleep(0.1)
-            except Exception as e:
-                print(f"Error playing audio: {e}")
-                ctk.CTkMessagebox.show_error(
-                    "Error", f"Failed to play audio: {e}")
-            finally:
-                self.stop_audio()
+    #     def audio_thread():
+    #         try:
+    #             self.audio_player = MediaPlayer(audio_path)
+    #             while True:
+    #                 audio_pos = self.audio_player.get_pts()
+    #                 if audio_pos < 0:
+    #                     break
+    #                 time.sleep(0.1)
+    #         except Exception as e:
+    #             print(f"Error playing audio: {e}")
+    #             ctk.CTkMessagebox.show_error(
+    #                 "Error", f"Failed to play audio: {e}")
+    #         finally:
+    #             self.stop_audio()
 
-        threading.Thread(target=audio_thread, daemon=True).start()
+    #     threading.Thread(target=audio_thread, daemon=True).start()
 
     def stop_video(self):
         if self.media_player:
             self.media_player.close_player()
             self.media_player = None
-
-    def stop_audio(self):
-        if hasattr(self, "audio_player") and self.audio_player:
-            self.audio_player.close_player()
-            self.audio_player = None
 
     def record_vote(self, vote):
         """Record the user's vote."""
@@ -229,10 +241,15 @@ class TestInterface(ctk.CTkFrame):
         for widget in self.winfo_children():
             widget.destroy()
 
-        ctk.CTkLabel(self, text="You have completed the video test.\nGet ready for the audio test!",
+        self.stop_video()
+
+        ctk.CTkLabel(self, text="You have completed the video test.\nYou will now be test with 5 different audio clips.",
                      font=("Arial", 16), justify="center").pack(pady=20)
+        ctk.CTkLabel(self, text="Headphones use is recomended.",
+                     font=("Arial", 16)).pack(pady=20)
         ctk.CTkButton(self, text="Start Audio Test",
-                      command=self.start_audio_test).pack(pady=20)
+                      command=self.start_audio_test,
+                      width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=20)
 
     def start_audio_test(self):
         """Switch to the audio pool and start the audio test."""
@@ -248,7 +265,8 @@ class TestInterface(ctk.CTkFrame):
         ctk.CTkLabel(self, text="Thank you for participating!",
                      font=("Arial", 16)).pack(pady=20)
         ctk.CTkButton(self, text="Return to Main Menu",
-                      command=self.switch_to_main_menu).pack(pady=10)
+                      command=self.switch_to_main_menu,
+                      width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=10)
 
     def update_video_frame(self):
         """Update the video frame during playback."""
@@ -291,7 +309,8 @@ def run_test_interface():
     user_id = ctk.StringVar()
     ctk.CTkEntry(root, textvariable=user_id).pack(pady=5)
     ctk.CTkButton(root, text="Start Test", command=lambda: start_test(
-        root, user_id.get())).pack(pady=20)
+        root, user_id.get()),
+        width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=20)
     root.mainloop()
 
 

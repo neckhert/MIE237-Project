@@ -7,7 +7,7 @@ import customtkinter as ctk
 def main():
     # Set the appearance mode to "Dark" or "Light"
     ctk.set_appearance_mode("Dark")
-    ctk.set_default_color_theme("blue")  # Set the color theme
+    ctk.set_default_color_theme("dark-blue")  # Set the color theme
 
     root = ctk.CTk()
     root.title("237 Stats Project")
@@ -38,3 +38,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+# TODO Button sizes
+# ENd last video after voting
+# fix text
