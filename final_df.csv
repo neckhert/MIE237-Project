@@ -1,0 +1,5 @@
+,id,type,truth,correct
+0,0,audio,AI,0.0
+1,0,audio,Real,0.5
+2,0,video,AI,1.0
+3,0,video,Real,0.6666666666666666
