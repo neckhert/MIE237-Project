@@ -6,6 +6,7 @@ from tkinter import messagebox
 import cv2
 from data.csv_handler import write_voting_data
 import numpy as np
+from itertools import product
 
 
 class TestInterface(ctk.CTkFrame):
@@ -22,98 +23,93 @@ class TestInterface(ctk.CTkFrame):
         # Define video and audio pools
         self.video_pool = [
             {"person": "LeBron", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
-             "video_path": "tkinter-voting-app/src/data/videos/lebron_real.mp4"},
-            {"person": "LeBron", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
-             "video_path": "tkinter-voting-app/src/data/videos/lebron_fake.mp4"},
+             "video_path": "tkinter-voting-app/src/data/videos/LebronReal.mp4"},
+            {"person": "LeBron", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
+             "video_path": "tkinter-voting-app/src/data/videos/LebronFake.mp4"},
             {"person": "Will Smith", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/WillsmithReal.mp4"},
-            {"person": "Will Smith", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Will Smith", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/WillSmithFake.mp4"},
             {"person": "Snoop Dogg", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/SnoopDogReal.mp4"},
-            {"person": "Snoop Dogg", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Snoop Dogg", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/SnoopDogFake.mp4"},
             {"person": "MrBeast", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/MrBeastreal.mp4"},
-            {"person": "MrBeast", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "MrBeast", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/MrBeastFake.mp4"},
             {"person": "Justin Bieber", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/JustinBieberReal.mp4"},
-            {"person": "Justin Bieber", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Justin Bieber", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/JustinBieberFake.mp4"},
             {"person": "Bill Gates", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/BillGatesReal.mp4"},
-            {"person": "Bill Gates", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Bill Gates", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/BillGatesFake.mp4"},
             {"person": "Caitlin Clark", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/CaitlinClarkReal.mp4"},
-            {"person": "Caitlin Clark", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Caitlin Clark", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/CaitlinClarkFake.mp4"},
             {"person": "Kim K", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/KimKardashianReal.mp4"},
-            {"person": "Kim K", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Kim K", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/KimKardashianFake.mp4"},
             {"person": "Jordan", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/MichaelJordanReal.mp4"},
-            {"person": "Jordan", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Jordan", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/MichaelJordanFake.mp4"},
             {"person": "Oprah", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/videos/OprahWinfreyReal.mp4"},
-            {"person": "Oprah", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Oprah", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/videos/OprahWinfreyFake.mp4"}
         ]
 
         self.audio_pool = [
             {"person": "LeBron", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/LebronReal.mp3"},
-            {"person": "LeBron", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "LeBron", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/LebronFake.mp3"},
             {"person": "Will Smith", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/WillsmithReal.mp3"},
-            {"person": "Will Smith", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Will Smith", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/WillSmithFake.mp3"},
             {"person": "Snoop Dogg", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/SnoopDogReal.mp3"},
-            {"person": "Snoop Dogg", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Snoop Dogg", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/SnoopDogFake.mp3"},
             {"person": "MrBeast", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/MrBeastreal.mp3"},
-            {"person": "MrBeast", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "MrBeast", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/MrBeastFake.mp3"},
             {"person": "Justin Bieber", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/JustinBieberReal.mp3"},
-            {"person": "Justin Bieber", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Justin Bieber", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/JustinBieberFake.mp3"},
             {"person": "Bill Gates", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/BillGatesReal.mp3"},
-            {"person": "Bill Gates", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Bill Gates", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/BillGatesFake.mp3"},
             {"person": "Caitlin Clark", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/CaitlinClarkReal.mp3"},
-            {"person": "Caitlin Clark", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Caitlin Clark", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/CaitlinClarkFake.mp3"},
             {"person": "Kim K", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/KimKardashianReal.mp3"},
-            {"person": "Kim K", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Kim K", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/KimKardashianFake.mp3"},
             {"person": "Jordan", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/MichaelJordanReal.mp3"},
-            {"person": "Jordan", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Jordan", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/MichaelJordanFake.mp3"},
             {"person": "Oprah", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
              "video_path": "tkinter-voting-app/src/data/audios/OprahWinfreyReal.mp3"},
-            {"person": "Oprah", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+            {"person": "Oprah", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "AI",
              "video_path": "tkinter-voting-app/src/data/audios/OprahWinfreyFake.mp3"}
         ]
 
-        # Filter and shuffle pools
-        self.video_pool = self.filter_pool(self.video_pool)
-        random.shuffle(self.video_pool)
-        self.video_pool = self.video_pool[:5]
-
-        self.audio_pool = self.filter_pool(self.audio_pool)
-        random.shuffle(self.audio_pool)
-        self.audio_pool = self.audio_pool[:5]
+        # Filter and shuffle pools to ensure 5 real and 5 fake items
+        self.video_pool, self.audio_pool = self.get_balanced_pool(
+            self.video_pool, self.audio_pool)
 
         self.current_pool = self.video_pool
         self.current_round = 0
@@ -121,20 +117,125 @@ class TestInterface(ctk.CTkFrame):
         # Display the first voting round
         self.display_voting_round()
 
-    def filter_pool(self, pool):
-        """Filter the pool to include only one dataset (real or fake) per person."""
-        filtered_pool = []
-        seen_people = set()
+    def get_balanced_pool(self, video_pool, audio_pool):
+        """Ensure that there are exactly 5 videos and 5 audios, with 5 real and 5 fake media in total, and each person is used only once."""
+        # Separate real and fake items
+        real_videos = [item for item in video_pool if item["kind"] == "real"]
+        fake_videos = [item for item in video_pool if item["kind"] == "fake"]
+        real_audios = [item for item in audio_pool if item["kind"] == "real"]
+        fake_audios = [item for item in audio_pool if item["kind"] == "fake"]
 
-        for item in pool:
-            person = item["person"]
-            if person not in seen_people:
-                person_items = [v for v in pool if v["person"] == person]
-                selected_item = random.choice(person_items)
-                filtered_pool.append(selected_item)
-                seen_people.add(person)
+        # Shuffle lists to randomize selections
+        random.shuffle(real_videos)
+        random.shuffle(fake_videos)
+        random.shuffle(real_audios)
+        random.shuffle(fake_audios)
 
-        return filtered_pool
+        # Track used people
+        used_people = set()
+
+        # Select videos
+        thing = random.randint(0,1)
+        if thing ==0:    
+            balanced_videos = []
+            i=0
+            j=0
+            while len(balanced_videos)<5:
+                real=real_videos[i]
+                fake=fake_videos[j]
+                while real['person'] in used_people and i < 9:
+                    i+=1
+                    real=real_videos[i]
+                balanced_videos.append(real)
+                used_people.add(real["person"])
+                while fake['person'] in used_people and j<9:
+                    j+=1
+                    fake=fake_videos[j]
+                if len(balanced_videos)<5:
+                    balanced_videos.append(fake)
+                    used_people.add(fake["person"])
+                i+=1
+                j+=1
+
+            # Select audios
+            balanced_audios = []
+            i=0
+            j=0
+            fake=fake_audios[j]
+            real=real_audios[i]
+            while len(balanced_audios)<5:
+                while fake['person'] in used_people and j<9:
+                    j+=1
+                    fake=fake_audios[j]
+                balanced_audios.append(fake)
+                used_people.add(fake["person"])
+                while real['person'] in used_people and i<9:
+                    i+=1
+                    real=real_audios[i]
+                if len(balanced_audios)<5:
+                    balanced_audios.append(real)
+                    used_people.add(real["person"])
+                i+=1
+                j+=1
+        else:
+            balanced_videos = []
+            i=0
+            j=0
+            real=real_videos[j]
+            fake=fake_videos[i]
+        
+            while len(balanced_videos)<5:
+                while fake['person'] in used_people and i < 9:
+                    i+=1
+                    fake=fake_videos[i]
+                balanced_videos.append(fake)
+                used_people.add(fake["person"])
+                while real['person'] in used_people and j<9:
+                    j+=1
+                    real=real_videos[j]
+                if len(balanced_videos)<5:
+                    balanced_videos.append(real)
+                    used_people.add(real["person"])
+                i+=1
+                j+=1
+
+            # Select audios
+            balanced_audios = []
+            i=0
+            j=0
+            fake=fake_audios[i]
+            real=real_audios[j]
+            while len(balanced_audios)<5:
+                while real['person'] in used_people and j<9:
+                    j+=1
+                    real=real_audios[j]
+                balanced_audios.append(real)
+                used_people.add(real["person"])
+                while fake['person'] in used_people and i<9:
+                    i+=1
+                    fake=fake_audios[i]
+                if len(balanced_audios)<5:
+                    balanced_audios.append(fake)
+                    used_people.add(fake["person"])
+                i+=1
+                j+=1
+            
+
+        # Ensure we have exactly 5 real and 5 fake media
+        real_count = sum(1 for item in balanced_videos +
+                         balanced_audios if item["kind"] == "real")
+        fake_count = sum(1 for item in balanced_videos +
+                         balanced_audios if item["kind"] == "fake")
+
+        if real_count != 5 or fake_count != 5:
+            raise ValueError(
+                "Unable to balance the pool with 5 real and 5 fake media.")
+
+        # Shuffle again to ensure order randomness
+        random.shuffle(balanced_videos)
+        random.shuffle(balanced_audios)
+
+        return balanced_videos, balanced_audios
 
     def display_voting_round(self):
         # Clear the current frame
@@ -190,36 +291,6 @@ class TestInterface(ctk.CTkFrame):
 
         self.update_video_frame()
 
-    # def play_audio(self, audio_path, person_name):
-    #     """Play the audio."""
-    #     self.stop_audio()
-
-    #     # Display the person's name
-    #     ctk.CTkLabel(self, text=f"Person: {person_name}", font=(
-    #         "Arial", 16)).pack(pady=10)
-
-    #     if not os.path.exists(audio_path):
-    #         ctk.CTkMessagebox.show_error(
-    #             "Error", f"Audio file not found: {audio_path}")
-    #         return
-
-    #     def audio_thread():
-    #         try:
-    #             self.audio_player = MediaPlayer(audio_path)
-    #             while True:
-    #                 audio_pos = self.audio_player.get_pts()
-    #                 if audio_pos < 0:
-    #                     break
-    #                 time.sleep(0.1)
-    #         except Exception as e:
-    #             print(f"Error playing audio: {e}")
-    #             ctk.CTkMessagebox.show_error(
-    #                 "Error", f"Failed to play audio: {e}")
-    #         finally:
-    #             self.stop_audio()
-
-    #     threading.Thread(target=audio_thread, daemon=True).start()
-
     def stop_video(self):
         if self.media_player:
             self.media_player.close_player()
@@ -245,7 +316,7 @@ class TestInterface(ctk.CTkFrame):
 
         ctk.CTkLabel(self, text="You have completed the video test.\nYou will now be test with 5 different audio clips.",
                      font=("Arial", 16), justify="center").pack(pady=20)
-        ctk.CTkLabel(self, text="Headphones use is recomended.",
+        ctk.CTkLabel(self, text="Headphone use is recomended.",
                      font=("Arial", 16)).pack(pady=20)
         ctk.CTkButton(self, text="Start Audio Test",
                       command=self.start_audio_test,
@@ -269,7 +340,7 @@ class TestInterface(ctk.CTkFrame):
                       width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=10)
 
     def update_video_frame(self):
-        """Update the video frame during playback."""
+        """Update the video frame during playback and ensure consistent frame rate."""
         if self.media_player:
             # Get the next frame from the MediaPlayer
             frame, val = self.media_player.get_frame()
@@ -280,7 +351,7 @@ class TestInterface(ctk.CTkFrame):
                 return
 
             if frame is not None:
-                img, t = frame
+                img, t = frame  # `t` is the timestamp of the current frame
                 try:
                     # Convert the frame to a format suitable for OpenCV
                     img_array = np.frombuffer(
@@ -298,7 +369,7 @@ class TestInterface(ctk.CTkFrame):
                     self.stop_video()
 
             # Schedule the next frame update
-            self.after(30, self.update_video_frame)
+            self.after(33, self.update_video_frame)
 
 
 def run_test_interface():

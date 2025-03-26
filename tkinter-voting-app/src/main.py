@@ -40,4 +40,5 @@ if __name__ == "__main__":
     main()
 # TODO Button sizes
 # ENd last video after voting
+# Frame rate
 # fix text
