@@ -1,4 +1,4 @@
-from tkinter import Frame, Button, Label, Entry, StringVar, Tk, messagebox
+from tkinter import Frame, Button, Label, Entry, StringVar, Tk, messagebox, ttk
 import pygame
 from data.csv_handler import write_voting_data
 from ffpyplayer.player import MediaPlayer
@@ -6,6 +6,8 @@ import os  # For debugging file paths
 import numpy as np  # Import NumPy for array conversion
 import cv2  # Import OpenCV for video playback
 import random  # Import random for shuffling
+import threading  # Import threading for audio playback
+import time  # Import time for sleep
 
 
 class TestInterface(Frame):
@@ -43,14 +45,62 @@ class TestInterface(Frame):
              "video_path": "tkinter-voting-app/src/data/videos/BillGatesFake.mp4"}
         ]
 
+        self.audio_pool = [
+            {"person": "LeBron", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/LebronReal.mp3"},
+            {"person": "LeBron", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/LebronFake.mp3"},
+            {"person": "Will Smith", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/WillsmithReal.mp3"},
+            {"person": "Will Smith", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/WillSmithFake.mp3"},
+            {"person": "Snoop Dogg", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/SnoopDogReal.mp3"},
+            {"person": "Snoop Dogg", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/SnoopDogFake.mp3"},
+            {"person": "MrBeast", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/MrBeastreal.mp3"},
+            {"person": "MrBeast", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/MrBeastFake.mp3"},
+            {"person": "Justin Bieber", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/JustinBieberReal.mp3"},
+            {"person": "Justin Bieber", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/JustinBieberFake.mp3"},
+            {"person": "Bill Gates", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/BillGatesReal.mp3"},
+            {"person": "Bill Gates", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/BillGatesFake.mp3"},
+            {"person": "Caitlin Clark", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/CaitlinClarkReal.mp3"},
+            {"person": "Caitlin Clark", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/CaitlinClarkFake.mp3"},
+            {"person": "Kim K", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/KimKardashianReal.mp3"},
+            {"person": "Kim K", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/KimKardashianFake.mp3"},
+            {"person": "Jordan", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/MichaelJordanReal.mp3"},
+            {"person": "Jordan", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/MichaelJordanFake.mp3"},
+            {"person": "Oprah", "kind": "real", "options": ("Real", "AI"), "ground_truth": "Real",
+             "video_path": "tkinter-voting-app/src/data/audios/OprahWinfreyReal.mp3"},
+            {"person": "Oprah", "kind": "fake", "options": ("Real", "AI"), "ground_truth": "Fake",
+             "video_path": "tkinter-voting-app/src/data/audios/OprahWinfreyFake.mp3"}
+        ]
+
         # Filter the video pool to include only one video per person
-        self.video_pool = self.filter_video_pool(self.video_pool)
+        self.video_pool = self.filter_pool(self.video_pool)
 
         # Shuffle the video pool for random order
         random.shuffle(self.video_pool)
-
         self.video_pool = self.video_pool[:5]
 
+        # Do the same with the audio pool
+        self.audio_pool = self.filter_pool(self.audio_pool)
+        random.shuffle(self.audio_pool)
+        self.audio_pool = self.audio_pool[:5]
+
+        self.current_pool = self.video_pool
         self.current_round = 0
         self.video_label = None  # Label to display video frames
         self.video_capture = None  # OpenCV video capture object
@@ -63,17 +113,17 @@ class TestInterface(Frame):
         # Display the first voting round
         self.display_voting_round()
 
-    def filter_video_pool(self, video_pool):
-        """Filter the video pool to include only one video (real or fake) per person."""
+    def filter_pool(self, pool):
+        """Filter the pool to include only one dataset (real or fake) per person."""
         filtered_pool = []
         seen_people = set()
 
-        for video in video_pool:
+        for video in pool:
             person = video["person"]
             if person not in seen_people:
                 # Randomly select either "real" or "fake" for this person
                 person_videos = [
-                    v for v in video_pool if v["person"] == person]
+                    v for v in pool if v["person"] == person]
                 selected_video = random.choice(person_videos)
                 filtered_pool.append(selected_video)
                 seen_people.add(person)
@@ -86,32 +136,43 @@ class TestInterface(Frame):
             widget.destroy()
 
         # Check if all rounds are completed
-        if self.current_round >= len(self.video_pool):
-            self.switch_to_thank_you()
-            return
+        if self.current_round >= len(self.current_pool):
+            if self.current_pool == self.video_pool:
+                # Show the transition window before switching to the audio pool
+                self.show_transition_window()
+                return
+            else:
+                # If both pools are completed, show the thank-you screen
+                self.switch_to_thank_you()
+                return
 
-        # Randomly select a video for the current round
-        current_data = self.video_pool[self.current_round]
+        # Get the current data
+        current_data = self.current_pool[self.current_round]
         option1, option2 = current_data["options"]
 
-        # Display the voting options
+
+        # Display the round number and data type
         Label(self, text=f"Round {self.current_round + 1}",
-              font=("Arial", 16)).pack(pady=20)
+              font=("Arial", 16)).pack(pady=10)
 
-        # Play the video for the current round
-        video_path = current_data["video_path"]
-        self.play_video(video_path)
+        # Play the video or audio for the current round
+        media_path = current_data["video_path"]
+        self.play_video(media_path)
 
+        # Display the voting options
         Button(self, text=option1, command=lambda: self.record_vote(
             option1)).pack(pady=10)
         Button(self, text=option2, command=lambda: self.record_vote(
             option2)).pack(pady=10)
 
     def play_video(self, video_path):
-        # Stop any previous video playback
+        """Play the video."""
         self.stop_video()
 
-        # Debug: Check if the video file exists
+        # Clear the current frame
+        for widget in self.winfo_children():
+            widget.destroy()
+
         if not os.path.exists(video_path):
             messagebox.showerror(
                 "Error", f"Video file not found: {video_path}")
@@ -125,19 +186,53 @@ class TestInterface(Frame):
                 "Error", f"Failed to initialize MediaPlayer: {e}")
             return
 
-        # Retrieve the video's frame rate
-        frame_rate = self.media_player.get_metadata().get(
-            'frame_rate', 30)  # Default to 30 fps if not available
-        if isinstance(frame_rate, tuple):  # Handle frame rate as a tuple (numerator, denominator)
-            if frame_rate[1] == 0:  # Avoid division by zero
-                self.frame_rate = 30  # Default to 30 fps
+        # Retrieve the video's metadata
+        video_metadata = self.media_player.get_metadata()
+        if video_metadata:
+            frame_rate = video_metadata.get(
+                'frame_rate', 30)  # Default to 30 fps
+            # Handle frame rate as a tuple (numerator, denominator)
+            if isinstance(frame_rate, tuple):
+                if frame_rate[1] != 0:  # Avoid division by zero
+                    self.frame_rate = frame_rate[0] / frame_rate[1]
+                else:
+                    self.frame_rate = 30
             else:
-                self.frame_rate = frame_rate[0] / frame_rate[1]
-        else:
-            self.frame_rate = frame_rate
+                self.frame_rate = frame_rate
 
         # Start video playback
         self.update_video_frame()
+
+    def play_audio(self, audio_path, person_name):
+        """Play the audio using ffpyplayer."""
+        self.stop_audio()
+
+        # Clear the current frame
+        for widget in self.winfo_children():
+            widget.destroy()
+
+        # Display the person's name
+        Label(self, text=f"Person: {person_name}", font=("Arial", 16)).pack(pady=10)
+
+        if not os.path.exists(audio_path):
+            messagebox.showerror("Error", f"Audio file not found: {audio_path}")
+            return
+
+        def audio_thread():
+            try:
+                self.audio_player = MediaPlayer(audio_path)
+                while True:
+                    audio_pos = self.audio_player.get_pts()
+                    if audio_pos < 0:  # Playback finished
+                        break
+                    time.sleep(0.1)
+            except Exception as e:
+                print(f"Error playing audio: {e}")
+                messagebox.showerror("Error", f"Failed to play audio: {e}")
+            finally:
+                self.stop_audio()
+
+        threading.Thread(target=audio_thread, daemon=True).start()
 
     def update_video_frame(self):
         if self.media_player:
@@ -183,6 +278,12 @@ class TestInterface(Frame):
             self.media_player = None
         cv2.destroyAllWindows()  # Ensure the OpenCV window is closed
 
+    def stop_audio(self):
+        """Stop the audio playback."""
+        if hasattr(self, "audio_player") and self.audio_player:
+            self.audio_player.close_player()
+            self.audio_player = None
+
     def record_vote(self, vote):
         # Save the vote to the CSV file
         current_data = self.video_pool[self.current_round]
@@ -204,6 +305,29 @@ class TestInterface(Frame):
               font=("Arial", 16)).pack(pady=20)
         Button(self.parent, text="Return to Main Menu",
                command=self.switch_to_main_menu).pack(pady=10)
+
+    def show_transition_window(self):
+        """Display a transition window between video and audio tests."""
+        # Clear the current frame
+        for widget in self.winfo_children():
+            widget.destroy()
+
+        # Display the transition message
+        Label(self, text="You have completed the video test.\nGet ready for the audio test!",
+              font=("Arial", 16), justify="center").pack(pady=20)
+
+        # Add a button to proceed to the audio test
+        Button(self, text="Start Audio Test", font=("Arial", 12),
+               command=self.start_audio_test).pack(pady=20)
+
+    def start_audio_test(self):
+        """Switch to the audio pool and start the audio test."""
+        self.current_pool = self.audio_pool
+        self.current_round = 0
+        self.display_voting_round()
+
+    # TODO: switch between video and audio
+    # TODO: consent form
 
 
 def run_test_interface():
