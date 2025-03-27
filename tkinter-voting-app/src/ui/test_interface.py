@@ -135,91 +135,90 @@ class TestInterface(ctk.CTkFrame):
         used_people = set()
 
         # Select videos
-        thing = random.randint(0,1)
-        if thing ==0:    
+        thing = random.randint(0, 1)
+        if thing == 0:
             balanced_videos = []
-            i=0
-            j=0
-            while len(balanced_videos)<5:
-                real=real_videos[i]
-                fake=fake=fake_videos[j]
+            i = 0
+            j = 0
+            while len(balanced_videos) < 5:
+                real = real_videos[i]
+                fake = fake = fake_videos[j]
                 while real['person'] in used_people and i < 9:
-                    i+=1
-                    real=real_videos[i]
+                    i += 1
+                    real = real_videos[i]
                 balanced_videos.append(real)
                 used_people.add(real["person"])
-                while fake['person'] in used_people and j<9:
-                    j+=1
-                    fake=fake_videos[j]
-                if len(balanced_videos)<5:
+                while fake['person'] in used_people and j < 9:
+                    j += 1
+                    fake = fake_videos[j]
+                if len(balanced_videos) < 5:
                     balanced_videos.append(fake)
                     used_people.add(fake["person"])
-                i+=1
-                j+=1
+                i += 1
+                j += 1
 
             # Select audios
             balanced_audios = []
-            i=0
-            j=0
-            fake=fake_audios[j]
-            real=real_audios[i]
-            while len(balanced_audios)<5:
-                while fake['person'] in used_people and j<9:
-                    j+=1
-                    fake=fake_audios[j]
+            i = 0
+            j = 0
+            fake = fake_audios[j]
+            real = real_audios[i]
+            while len(balanced_audios) < 5:
+                while fake['person'] in used_people and j < 9:
+                    j += 1
+                    fake = fake_audios[j]
                 balanced_audios.append(fake)
                 used_people.add(fake["person"])
-                while real['person'] in used_people and i<9:
-                    i+=1
-                    real=real_audios[i]
-                if len(balanced_audios)<5:
+                while real['person'] in used_people and i < 9:
+                    i += 1
+                    real = real_audios[i]
+                if len(balanced_audios) < 5:
                     balanced_audios.append(real)
                     used_people.add(real["person"])
-                i+=1
-                j+=1
+                i += 1
+                j += 1
         else:
             balanced_videos = []
-            i=0
-            j=0
-            real=real_videos[j]
-            fake=fake_videos[i]
-        
-            while len(balanced_videos)<5:
+            i = 0
+            j = 0
+            real = real_videos[j]
+            fake = fake_videos[i]
+
+            while len(balanced_videos) < 5:
                 while fake['person'] in used_people and i < 9:
-                    i+=1
-                    fake=fake_videos[i]
+                    i += 1
+                    fake = fake_videos[i]
                 balanced_videos.append(fake)
                 used_people.add(fake["person"])
-                while real['person'] in used_people and j<9:
-                    j+=1
-                    real=real_videos[j]
-                if len(balanced_videos)<5:
+                while real['person'] in used_people and j < 9:
+                    j += 1
+                    real = real_videos[j]
+                if len(balanced_videos) < 5:
                     balanced_videos.append(real)
                     used_people.add(real["person"])
-                i+=1
-                j+=1
+                i += 1
+                j += 1
 
             # Select audios
             balanced_audios = []
-            i=0
-            j=0
-            fake=fake_audios[i]
-            real=real_audios[j]
-            while len(balanced_audios)<5:
-                while real['person'] in used_people and j<9:
-                    j+=1
-                    real=real_audios[j]
+            i = 0
+            j = 0
+            fake = fake_audios[i]
+            real = real_audios[j]
+            while len(balanced_audios) < 5:
+                while real['person'] in used_people and j < 9:
+                    j += 1
+                    real = real_audios[j]
                 balanced_audios.append(real)
                 used_people.add(real["person"])
-                while fake['person'] in used_people and i<9:
-                    i+=1
-                    fake=fake_audios[i]
-                if len(balanced_audios)<5:
+                while fake['person'] in used_people and i < 9:
+                    i += 1
+                    fake = fake_audios[i]
+                if len(balanced_audios) < 5:
                     balanced_audios.append(fake)
                     used_people.add(fake["person"])
-                i+=1
-                j+=1
-            
+                i += 1
+                j += 1
 
         # Ensure we have exactly 5 real and 5 fake media
         real_count = sum(1 for item in balanced_videos +
@@ -275,13 +274,16 @@ class TestInterface(ctk.CTkFrame):
 
     def play_video(self, video_path):
         """Play the video."""
+        # Stop any previous video playback
         self.stop_video()
 
+        # Debug: Check if the video file exists
         if not os.path.exists(video_path):
             messagebox.showerror(
                 "Error", f"Video file not found: {video_path}")
             return
 
+        # Create a MediaPlayer instance
         try:
             self.media_player = MediaPlayer(video_path)
         except Exception as e:
@@ -289,6 +291,18 @@ class TestInterface(ctk.CTkFrame):
                 "Error", f"Failed to initialize MediaPlayer: {e}")
             return
 
+        # Retrieve the video's frame rate
+        frame_rate = self.media_player.get_metadata().get(
+            'frame_rate', 30)  # Default to 30 fps if not available
+        if isinstance(frame_rate, tuple):  # Handle frame rate as a tuple (numerator, denominator)
+            if frame_rate[1] == 0:  # Avoid division by zero
+                self.frame_rate = 30  # Default to 30 fps
+            else:
+                self.frame_rate = frame_rate[0] / frame_rate[1]
+        else:
+            self.frame_rate = frame_rate
+
+        # Start video playback
         self.update_video_frame()
 
     def stop_video(self):
@@ -314,7 +328,7 @@ class TestInterface(ctk.CTkFrame):
 
         self.stop_video()
 
-        ctk.CTkLabel(self, text="You have completed the video test.\nYou will now be test with 5 different audio clips.",
+        ctk.CTkLabel(self, text="You have completed the video test.\nYou will now be test with 5 different audio clips.\nAs with the videos, please wait until the audio finishes playing before voting.",
                      font=("Arial", 16), justify="center").pack(pady=20)
         ctk.CTkLabel(self, text="Headphone use is recomended.",
                      font=("Arial", 16)).pack(pady=20)
@@ -324,6 +338,7 @@ class TestInterface(ctk.CTkFrame):
 
     def start_audio_test(self):
         """Switch to the audio pool and start the audio test."""
+        self.stop_video()
         self.current_pool = self.audio_pool
         self.current_round = 0
         self.display_voting_round()
@@ -339,39 +354,45 @@ class TestInterface(ctk.CTkFrame):
                       command=self.switch_to_main_menu,
                       width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=10)
 
+    
     def update_video_frame(self):
-        """Update the video frame during playback and ensure consistent frame rate."""
         if self.media_player:
             # Get the next frame from the MediaPlayer
             frame, val = self.media_player.get_frame()
 
-            if val == 'eof':  # End of file
-                print("End of video playback.")
-                self.stop_video()
-                return
+            # Debug: Check the frame and value
+            print(f"Frame: {frame}, Value: {val}")
 
             if frame is not None:
-                img, t = frame  # `t` is the timestamp of the current frame
+                img, t = frame
+                # Convert the frame to a format suitable for OpenCV
                 try:
-                    # Convert the frame to a format suitable for OpenCV
+                    # Convert bytearray to NumPy array with the correct shape
                     img_array = np.frombuffer(
                         img.to_bytearray()[0], dtype=np.uint8)
                     img_array = img_array.reshape((img.get_size()[1], img.get_size()[
-                                                  0], 3))  # Height, Width, Channels
-                    img_array = cv2.cvtColor(
-                        img_array, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-
-                    # Display the frame using OpenCV
+                                                0], 3))  # Height, Width, Channels
+                    # Convert BGR to RGB for correct coloring
+                    img_array = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
+                    # Display the frame in an OpenCV window
                     cv2.imshow("Video Playback", img_array)
-                    cv2.waitKey(1)  # Wait for 1ms to display the frame
+                    # Use the default playback rate based on the frame rate
+                    delay = int(1000 / self.frame_rate)
+                    cv2.waitKey(delay)
                 except Exception as e:
                     print(f"Error processing frame: {e}")
-                    self.stop_video()
+                    return
+
+            # Check if playback is finished
+            if val == 'eof':
+                print("End of video playback.")
+                self.stop_video()
+                cv2.destroyAllWindows()  # Close the OpenCV window
+                return
 
             # Schedule the next frame update
-            self.after(33, self.update_video_frame)
-
-
+            self.after(10, self.update_video_frame)
+            
 def run_test_interface():
     root = ctk.CTk()
     root.title("Voting App")
