@@ -6,7 +6,7 @@ new_df=df.copy()
 
 
 user_key_dict={}
-counter=0
+counter=1
 
 for user in df["Name"].unique():
     user_key_dict[user]=counter
