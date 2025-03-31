@@ -1,16 +1,16 @@
 # MIE237 Project: How well can humans discern AI-generated and Real content
 
-This project is a Tkinter-based application for the purpose of testing the hypothesis of human ability to discern AI and real content. The user views the videos and audio clips through a series of rounds. The voting data, along with the user ID and video ground truth, is recorded in a CSV file or a database. 
+This project is a Tkinter-based application designed to test the hypothesis of human ability to discern AI-generated and real content. Users view videos and audio clips through a series of interfaces and cast their votes.
 
 ## Project Structure
 
 ```
-tkinter-voting-app
+MIE237-Project
 ├── src
 │   ├── main.py                # Entry point of the application
 │   ├── ui
 │   │   ├── consent_window.py   # Consent window implementation
-│   │   ├── test_interface.py    # Test interface for video playback and voting
+│   │   ├── test_interface.py   # Test interface for video playback and voting
 │   │   └── __init__.py         # UI package initializer
 │   ├── data
 │   │   ├── database.py         # Database interaction functions
