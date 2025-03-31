@@ -179,3 +179,24 @@ Maddy, tkinter-voting-app/src/data/audios/MrBeastFake.mp3, AI, AI
 Maddy, tkinter-voting-app/src/data/audios/OprahWinfreyReal.mp3, Real, Real
 Maddy, tkinter-voting-app/src/data/audios/SnoopDogReal.mp3, AI, Real
 Maddy, tkinter-voting-app/src/data/audios/KimKardashianFake.mp3, AI, AI
+Arnab, tkinter-voting-app/src/data/videos/OprahWinfreyFake.mp4,AI,AI
+Arnab,tkinter-voting-app/src/data/videos/MichaelJordanReal.mp4,Real,Real
+Arnab,tkinter-voting-app/src/data/videos/CaitlinClarkReal.mp4,AI,Real
+Arnab,tkinter-voting-app/src/data/videos/SnoopDogReal.mp4,AI,Real
+Arnab,tkinter-voting-app/src/data/videos/WillSmithFake.mp4,AI,AI
+Arnab,tkinter-voting-app/src/data/audios/JustinBieberReal.mp3,AI,Real
+Arnab,tkinter-voting-app/src/data/audios/KimKardashianFake.mp3,Real,AI
+Arnab,tkinter-voting-app/src/data/audios/MrBeastFake.mp3,AI,AI
+Arnab,tkinter-voting-app/src/data/audios/LebronReal.mp3,Real,Real
+Arnab,tkinter-voting-app/src/data/audios/BillGatesFake.mp3,Real,AI
+lalin,tkinter-voting-app/src/data/videos/SnoopDogFake.mp4,AI,AI
+lalin,tkinter-voting-app/src/data/videos/JustinBieberFake.mp4,AI,AI
+lalin,tkinter-voting-app/src/data/videos/MichaelJordanFake.mp4,Real,AI
+lalin,tkinter-voting-app/src/data/videos/OprahWinfreyReal.mp4,Real,Real
+lalin,tkinter-voting-app/src/data/videos/CaitlinClarkReal.mp4,Real,Real
+lalin,tkinter-voting-app/src/data/audios/BillGatesReal.mp3,Real,Real
+lalin,tkinter-voting-app/src/data/audios/LebronReal.mp3,Real,Real
+lalin,tkinter-voting-app/src/data/audios/MrBeastFake.mp3,AI,AI
+lalin,tkinter-voting-app/src/data/audios/KimKardashianReal.mp3,AI,Real
+lalin,tkinter-voting-app/src/data/audios/WillSmithFake.mp3,Real,AI
+
