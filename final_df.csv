@@ -55,22 +55,22 @@
 53,14,audio,Real,0.3333333333333333
 54,14,video,AI,0.0
 55,14,video,Real,0.5
-56,15,audio, AI,0.0
-57,15,audio, Real,0.6666666666666666
-58,15,video, AI,0.6666666666666666
-59,15,video, Real,0.5
-60,16,audio, AI,0.0
-61,16,audio, Real,0.3333333333333333
-62,16,video, AI,0.3333333333333333
-63,16,video, Real,0.5
-64,17,audio, AI,0.0
-65,17,audio, Real,0.6666666666666666
-66,17,video, AI,1.0
-67,17,video, Real,1.0
-68,18,audio, AI,1.0
-69,18,audio, Real,0.5
-70,18,video, AI,0.5
-71,18,video, Real,0.6666666666666666
+56,15,audio,AI,0.0
+57,15,audio,Real,0.6666666666666666
+58,15,video,AI,0.6666666666666666
+59,15,video,Real,0.5
+60,16,audio,AI,0.0
+61,16,audio,Real,0.3333333333333333
+62,16,video,AI,0.3333333333333333
+63,16,video,Real,0.5
+64,17,audio,AI,0.0
+65,17,audio,Real,0.6666666666666666
+66,17,video,AI,1.0
+67,17,video,Real,1.0
+68,18,audio,AI,1.0
+69,18,audio,Real,0.5
+70,18,video,AI,0.5
+71,18,video,Real,0.6666666666666666
 72,19,audio,AI,0.3333333333333333
 73,19,audio,Real,0.5
 74,19,video,AI,1.0
