@@ -1,1 +1,11 @@
-
+Name,File,Vote,Truth
+ethan,tkinter-voting-app/src/data/videos/MrBeastFake.mp4,AI,AI,12.58
+ethan,tkinter-voting-app/src/data/videos/LebronReal.mp4,Real,Real,11.11
+ethan,tkinter-voting-app/src/data/videos/OprahWinfreyReal.mp4,Real,Real,13.43
+ethan,tkinter-voting-app/src/data/videos/MichaelJordanFake.mp4,AI,AI,16.21
+ethan,tkinter-voting-app/src/data/videos/BillGatesFake.mp4,AI,AI,21.99
+ethan,tkinter-voting-app/src/data/audios/SnoopDogReal.mp3,Real,Real,13.03
+ethan,tkinter-voting-app/src/data/audios/WillSmithFake.mp3,AI,AI,15.23
+ethan,tkinter-voting-app/src/data/audios/CaitlinClarkReal.mp3,Real,Real,14.09
+ethan,tkinter-voting-app/src/data/audios/JustinBieberFake.mp3,AI,AI,10.67
+ethan,tkinter-voting-app/src/data/audios/KimKardashianReal.mp3,Real,Real,17.49
