@@ -310,22 +310,68 @@ class TestInterface(ctk.CTkFrame):
         else:
             self.frame_rate = frame_rate
 
+        # Start the timer for this video
+        self.video_start_time = time.time()
+
         # Start video playback
         self.update_video_frame()
 
     def stop_video(self):
+        """Stop the video playback."""
         if self.media_player:
             self.media_player.close_player()
             self.media_player = None
 
+    def stop_audio(self):
+        """Stop the audio playback."""
+        if self.audio_player:
+            self.audio_player.close_player()
+            self.audio_player = None
+
+    def play_audio(self, audio_path):
+        """Play the audio."""
+        # Stop any previous audio playback
+        if self.audio_player:
+            self.audio_player.close_player()
+
+        # Debug: Check if the audio file exists
+        if not os.path.exists(audio_path):
+            messagebox.showerror(
+                "Error", f"Audio file not found: {audio_path}")
+            return
+
+        # Create an audio player instance
+        try:
+            self.audio_player = MediaPlayer(audio_path)
+        except Exception as e:
+            messagebox.showerror(
+                "Error", f"Failed to initialize AudioPlayer: {e}")
+            return
+
+        # Start the timer for this audio
+        self.video_start_time = time.time()
+
+        # Start audio playback
+        self.update_audio_frame()
+
     def record_vote(self, vote):
         """Record the user's vote."""
+        # Stop the timer for this media
+        self.video_end_time = time.time()
+
+        # Calculate response time
+        response_time = self.video_end_time - self.video_start_time
+
+        # Get the current media data
         current_data = self.current_pool[self.current_round]
         ground_truth = current_data["ground_truth"]
+        media_path = current_data["video_path"]
 
+        # Write the vote and response time to the CSV file
         write_voting_data("user_votes.csv", self.user_id,
-                          current_data["video_path"], vote, ground_truth)
+                          media_path, vote, ground_truth, response_time)
 
+        # Move to the next round
         self.current_round += 1
         self.display_voting_round()
 
@@ -384,7 +430,8 @@ class TestInterface(ctk.CTkFrame):
             writer = csv.writer(file)
             # Write the header if the file is new
             if not file_exists:
-                writer.writerow(["User ID", "Elapsed Time (Minutes)", "Elapsed Time (Seconds)"])
+                writer.writerow(
+                    ["User ID", "Elapsed Time (Minutes)", "Elapsed Time (Seconds)"])
             # Write the elapsed time for the current user
             writer.writerow([self.user_id, minutes, seconds])
 
@@ -404,7 +451,7 @@ class TestInterface(ctk.CTkFrame):
                     img_array = np.frombuffer(
                         img.to_bytearray()[0], dtype=np.uint8)
                     img_array = img_array.reshape((img.get_size()[1], img.get_size()[
-                                                0], 3))  # Height, Width, Channels
+                        0], 3))  # Height, Width, Channels
                     # Convert BGR to RGB for correct coloring
                     img_array = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
                     # Display the frame in an OpenCV window
@@ -425,7 +472,8 @@ class TestInterface(ctk.CTkFrame):
 
             # Schedule the next frame update
             self.after(10, self.update_video_frame)
-            
+
+
 def run_test_interface():
     root = ctk.CTk()
     root.title("Voting App")
