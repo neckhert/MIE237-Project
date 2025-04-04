@@ -14,8 +14,10 @@ for user in df["Name"].unique():
 
 df["id"]=df["Name"].apply(lambda x: user_key_dict.get(x))
 df["type"]=df["File"].apply(lambda x: "audio" if x[-1] == '3' else "video")
-df["correct"]=(df["Vote"]==df["Truth"]).apply(lambda x: int(x))
+df["accuracy"]=(df["Vote"]==df["Truth"]).apply(lambda x: int(x))
 df["truth"]=df["Truth"]
-final_df=df.groupby(by=["id", "type", "truth"])["correct"].mean().reset_index()
+accuracy_df=df.groupby(by=["id", "type", "truth"])["accuracy"].mean().reset_index()
+accuracy_df.to_csv("accuracy_df.csv")
 
-final_df.to_csv("final_df.csv")
+rt_df=df[["type", "truth", "RT"]]
+rt_df.to_csv("rt_df.csv")
