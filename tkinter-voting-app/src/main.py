@@ -3,7 +3,6 @@ from ui.consent_window import ConsentWindow
 from ui.test_interface import TestInterface
 import customtkinter as ctk
 
-
 def main():
     # Set the appearance mode to "Dark" or "Light"
     ctk.set_appearance_mode("Dark")
@@ -28,9 +27,9 @@ def main():
             consent_window, placeholder_text="Enter your User ID")
         user_id_entry.pack(pady=10)
         ctk.CTkButton(consent_window, text="I Consent", command=lambda: switch_to_test(
-            user_id_entry.get()), width = 200, height = 50,  font=ctk.CTkFont(size=16)).pack(pady=20)
+            user_id_entry.get()), width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=20)
         consent_window.pack(fill="both", expand=True)
-
+    
     switch_to_main_menu()
     root.mainloop()
 

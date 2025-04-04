@@ -7,6 +7,7 @@ import cv2
 from data.csv_handler import write_voting_data
 import numpy as np
 from itertools import product
+import time  # Import the time module
 
 
 class TestInterface(ctk.CTkFrame):
@@ -19,6 +20,10 @@ class TestInterface(ctk.CTkFrame):
         # Initialize media player attributes
         self.media_player = None
         self.audio_player = None
+
+        # Timer attributes
+        self.start_time = 0
+        self.end_time = 0
 
         # Define video and audio pools
         self.video_pool = [
@@ -113,6 +118,9 @@ class TestInterface(ctk.CTkFrame):
 
         self.current_pool = self.video_pool
         self.current_round = 0
+
+        # # Start the timer
+        self.start_time = time.time()
 
         # Display the first voting round
         self.display_voting_round()
@@ -348,13 +356,38 @@ class TestInterface(ctk.CTkFrame):
         for widget in self.winfo_children():
             widget.destroy()
 
-        ctk.CTkLabel(self, text="Thank you for participating!",
+        # Stop the timer
+        self.end_time = time.time()
+
+        # Calculate elapsed time
+        elapsed_time = self.end_time - self.start_time
+        elapsed_minutes = int(elapsed_time // 60)
+        elapsed_seconds = int(elapsed_time % 60)
+
+        # Write elapsed time to a file
+        self.write_elapsed_time_to_file(elapsed_minutes, elapsed_seconds)
+
+        # Display the thank-you message
+        ctk.CTkLabel(self, text=f"Thank you for participating!\nYou completed the test in {elapsed_minutes} minutes and {elapsed_seconds} seconds.",
                      font=("Arial", 16)).pack(pady=20)
         ctk.CTkButton(self, text="Return to Main Menu",
                       command=self.switch_to_main_menu,
                       width=200, height=50, font=ctk.CTkFont(size=16)).pack(pady=10)
 
-    
+    def write_elapsed_time_to_file(self, minutes, seconds):
+        """Write the elapsed time to a CSV file."""
+        import csv
+        file_path = "elapsed_time.csv"  # File to store elapsed times
+        file_exists = os.path.isfile(file_path)
+
+        with open(file_path, mode="a", newline="") as file:
+            writer = csv.writer(file)
+            # Write the header if the file is new
+            if not file_exists:
+                writer.writerow(["User ID", "Elapsed Time (Minutes)", "Elapsed Time (Seconds)"])
+            # Write the elapsed time for the current user
+            writer.writerow([self.user_id, minutes, seconds])
+
     def update_video_frame(self):
         if self.media_player:
             # Get the next frame from the MediaPlayer
